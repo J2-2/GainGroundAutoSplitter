@@ -3,10 +3,10 @@ ________________________________________________________________________________
 |                                                                                                     |
 | LiveSplit Auto Splitter script for Gain Ground (SEGA Mega Drive/Genesis Version).                   |
 | Supported Emulators:                                                                                |
-|   - Kega Fusion v3.64                                                                               |                                                                               |
+|   - Kega Fusion v3.64                                                                               |
 |                                                                                                     |
-| Made by J2_2:                                                                                       |                                                       |
-|   - GitHub: https://github.com/J2-2/GainGroundAutoSplitter                                 		  |
+| Made by J2_2:                                                                                       |
+|   - GitHub: https://github.com/J2-2/GainGroundAutoSplitter                                 	      |
 |_____________________________________________________________________________________________________|
 
 */
@@ -37,7 +37,9 @@ init
 
 update
 {
-	print("currentLevel: " + (vars.currentLevel) + ", ggLevel: " + current.ggLevel);
+	if (vars.currentLevel == 0) {
+		vars.currentLevel = 1;
+	}
 	if (current.ggLevel == vars.currentLevel)
 	{
 		vars.split = true;
@@ -49,6 +51,7 @@ start
 	if(current.ggLoad != 0x00 && old.ggLoad == 0x00 && old.ggMenu == 0xA0 && ((settings["easy"] && old.ggDifficulty == 0x00) || (settings["normal"] && old.ggDifficulty == 0x01) || (settings["hard"] && old.ggDifficulty == 0x02)))
 	{
 		vars.currentLevel = 1;
+		vars.split = false;
 		return true;
 	}
 }
@@ -58,8 +61,8 @@ split
 	if(vars.split)
 	{
 		vars.currentLevel += 1;
-		if (vars.currentLevel == 31 && current.ggDifficulty == 0x00) {
-			vars.currentLevel = 41;
+		if (vars.currentLevel == 30 && current.ggDifficulty == 0x00) {
+			vars.currentLevel = 40;
 		}
 		vars.split = false;
 		return !settings["rounds"] || vars.currentLevel % 10 == 1;
